@@ -1,16 +1,25 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
+import { initialState } from './initialState';
+
+const fields = {
+  name: {
+    type: 'text',
+    pattern: "^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$",
+    title:
+      "Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п.",
+  },
+  number: {
+    type: 'tel',
+    pattern: '/^(+)?((d{2,3}) ?d|d)(([ -]?d)|( ?(d{2,3}) ?)){5,12}d$/',
+    // pattern: '+?d{1,4}?[-.s]?(?d{1,3}?)?[-.s]?d{1,4}[-.s]?d{1,4}[-.s]?d{1,9}',
+    title:
+      'Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +',
+  },
+};
 
 class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
-
-  //   static propTypes = {
-  //     name: PropTypes.string,
-  //     number: PropTypes.number,
-  //   };
+  state = { ...initialState };
 
   //Отвечает за обновление состояния
   handleChange = event => {
@@ -34,7 +43,9 @@ class ContactForm extends Component {
   render() {
     const { name, number } = this.state;
     const { handleSubmit, handleChange } = this;
-
+    // console.log({ ...initialState });
+    // const form = document.querySelector('form');
+    // console.log(form);
     return (
       <>
         <form onSubmit={handleSubmit}>
@@ -43,10 +54,8 @@ class ContactForm extends Component {
             <input
               value={name}
               onChange={handleChange}
-              type="text"
               name="name"
-              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
+              {...fields.name}
               required
             />
           </label>
@@ -55,10 +64,8 @@ class ContactForm extends Component {
             <input
               value={number}
               onChange={handleChange}
-              type="tel"
               name="number"
-              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-              title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
+              {...fields.number}
               required
             />
           </label>
